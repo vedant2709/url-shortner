@@ -1,4 +1,4 @@
-const mongoose=require('mongoose');
+const mongoose=require("mongoose");
 
 async function connectToMongoDB(url){
   return mongoose.connect(url);
@@ -6,4 +6,4 @@ async function connectToMongoDB(url){
 
 module.exports={
   connectToMongoDB
-}
+};
