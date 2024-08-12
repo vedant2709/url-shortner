@@ -1,4 +1,5 @@
 const URL = require("../models/url");
+const User = require("../models/user");
 
 async function handleGenerateNewShortURL(req, res) {
   const body = req.body;
@@ -6,6 +7,7 @@ async function handleGenerateNewShortURL(req, res) {
 
   // Dynamically import nanoid
   const { nanoid } = await import('nanoid');
+  const allurls = await URL.find({ createdBy: req.user._id });
 
   const shortID = nanoid(6);
   await URL.create({
@@ -14,9 +16,13 @@ async function handleGenerateNewShortURL(req, res) {
     visitHistory: [],
     createdBy:req.user._id
   });
+  const user = await User.findOne({ email: req.user.email });
 
   return res.render("home",{
-    id: shortID 
+    urls: allurls,
+    id: shortID ,
+    username:user.name,
+    userRole: user.role,
   })
 }
 
